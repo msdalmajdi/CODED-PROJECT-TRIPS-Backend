@@ -1,8 +1,9 @@
 const connectDb = require("./database");
 const express = require("express");
+const profileRoutes = require("./api/profiles/profile.routes");
 const passport = require("passport");
 const { localStrategy, jwtStrategy } = require("./middleware/passport");
-const userRoutes = require("./api/users/users.routes")
+const userRoutes = require("./api/users/users.routes");
 
 const cors = require("cors");
 
@@ -17,11 +18,9 @@ passport.use(jwtStrategy);
 app.use(express.json());
 app.use(cors());
 
+app.use("/api/profile", profileRoutes);
 
 app.use(userRoutes);
-
-
-
 
 app.use((req, res, next) => {
   const err = new Error("Not Found");
@@ -40,5 +39,4 @@ app.use((err, req, res, next) => {
 
 app.listen(8095, () => {
   console.log("The application is running on localhost:8095");
-  
 });
