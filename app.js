@@ -1,6 +1,6 @@
 const connectDb = require("./database");
 const express = require("express");
-
+const profileRoutes = require("./api/profiles/profile.routes");
 const cors = require("cors");
 
 const app = express();
@@ -9,6 +9,8 @@ connectDb();
 
 app.use(express.json());
 app.use(cors());
+
+app.use("/api/profile", profileRoutes);
 
 app.use((req, res, next) => {
   const err = new Error("Not Found");
