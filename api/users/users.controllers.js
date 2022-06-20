@@ -5,6 +5,7 @@ const jwt = require("jsonwebtoken");
 
 exports.signin = async (req, res) => {
   try {
+    console.log("something")
     const payload = {
       _id: req.user._id,
       username: req.user.username,
@@ -28,7 +29,8 @@ exports.signup = async (req, res) => {
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET);
 
-    await Profile.create(newUser._id)
+    const newProfile = await Profile.create({user: newUser._id})
+    await User.findByIdAndUpdate(newUser._id, {profile:newProfile._id})
 
     res.json({ token: token });
   } catch (err) {
