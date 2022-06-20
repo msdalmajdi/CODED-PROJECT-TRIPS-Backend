@@ -6,7 +6,7 @@ const TripSchema = new mongoose.Schema({
   image: {
     type: String,
     default:
-      "https://kingcoleducks.com/wp-content/uploads/2018/08/recipe-placeholder-1.png",
+      "https://static.turbosquid.com/Preview/2016/06/03__14_24_55/0.pnga3fd8527-7f73-4f52-8770-a8169eb52e64Original.jpg",
   },
   owner: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 });
