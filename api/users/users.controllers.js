@@ -1,5 +1,5 @@
 const User = require("../../models/User");
-const Profile = require("../../models/Profile")
+const Profile = require("../../models/Profile");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
@@ -28,7 +28,7 @@ exports.signup = async (req, res) => {
     };
     const token = jwt.sign(payload, process.env.JWT_SECRET);
 
-    await Profile.create(newUser._id)
+    await Profile.create({ user: newUser._id });
 
     res.json({ token: token });
   } catch (err) {
@@ -38,7 +38,9 @@ exports.signup = async (req, res) => {
 
 exports.getUsers = async (req, res) => {
   try {
-    const users = await User.find();
+    const users = await User.find({}, "-createdAt -updatedAt").populate(
+      "profile"
+    );
     res.status(201).json(users);
   } catch (err) {
     res.status(500).json("Server Error");
