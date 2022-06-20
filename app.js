@@ -19,7 +19,6 @@ app.use(express.json());
 app.use(cors());
 
 app.use("/api/profile", profileRoutes);
-
 app.use(userRoutes);
 
 app.use((req, res, next) => {
