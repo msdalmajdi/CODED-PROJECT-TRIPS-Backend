@@ -3,12 +3,15 @@ const express = require("express");
 
 const cors = require("cors");
 
+const tripsRoutes = require("./api/trips/trips.routes");
 const app = express();
 
 connectDb();
 
 app.use(express.json());
 app.use(cors());
+
+app.use("/api/trips", tripsRoutes);
 
 app.use((req, res, next) => {
   const err = new Error("Not Found");
