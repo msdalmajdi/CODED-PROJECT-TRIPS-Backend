@@ -19,13 +19,8 @@ passport.use(jwtStrategy);
 app.use(express.json());
 app.use(cors());
 
-<<<<<<< HEAD
 app.use("/api/profile", profileRoutes);
-=======
 app.use("/api/trips", tripsRoutes);
-// app.use("/api/profile", profileRoutes);
-
->>>>>>> origin/main
 app.use(userRoutes);
 
 app.use((req, res, next) => {
