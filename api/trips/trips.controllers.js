@@ -1,6 +1,5 @@
 const Trip = require("../../models/Trip");
 const User = require("../../models/User");
-//const { default: slugify } = require("slugify");
 
 exports.getTrips = async (req, res, next) => {
   try {
@@ -14,7 +13,7 @@ exports.getTrips = async (req, res, next) => {
 exports.createTrip = async (req, res, next) => {
   try {
     const newTrip = await Trip.create(req.body);
-    res.json(newTrip);
+    res.json(newTrip); //
     await User.findByIdAndUpdate(req.body.owner, {
       $push: { trips: newTrip._id },
     });
