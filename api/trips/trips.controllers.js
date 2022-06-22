@@ -1,5 +1,6 @@
 const Trip = require("../../models/Trip");
 const User = require("../../models/User");
+const fs = require('fs');
 
 exports.getTrips = async (req, res, next) => {
   try {
@@ -52,7 +53,6 @@ exports.deleteTrip = async (req, res, next) => {
     next(error);
   }
 };
-
 exports.updateTrip = async (req, res, next) => {
   const { tripId } = req.params;
 
@@ -68,3 +68,11 @@ exports.updateTrip = async (req, res, next) => {
     next(error);
   }
 };
+exports.uploadImage = async(req, res, next) => { 
+  const date = Date.now()
+  const link = './uploads/image' + date + '.png'
+  req.pipe(fs.createWriteStream(link));
+  const imageLink = "http://192.168.43.154:8095/uploads/image"+date+".png"
+
+  res.status(200).end(imageLink)
+}
