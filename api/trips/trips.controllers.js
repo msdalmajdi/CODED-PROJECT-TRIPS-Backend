@@ -1,7 +1,6 @@
 const Trip = require("../../models/Trip");
+const User = require("../../models/User");
 const fs = require('fs');
-
-//const { default: slugify } = require("slugify");
 
 exports.getTrips = async (req, res, next) => {
   try {
@@ -15,13 +14,16 @@ exports.getTrips = async (req, res, next) => {
 exports.createTrip = async (req, res, next) => {
   try {
     const newTrip = await Trip.create(req.body);
-    res.json(newTrip);
+    res.json(newTrip); //
+    await User.findByIdAndUpdate(req.body.owner, {
+      $push: { trips: newTrip._id },
+    });
   } catch (error) {
     next(error);
   }
 };
 exports.updateTrip = async (req, res, next) => {
-  console.log("I got here");
+  console.log("I got in update");
   const { tripId } = req.params;
   try {
     const foundTrip = await Trip.findById(tripId);
@@ -38,7 +40,7 @@ exports.updateTrip = async (req, res, next) => {
 
 exports.deleteTrip = async (req, res, next) => {
   const { tripId } = req.params;
-
+  console.log(req.params);
   try {
     const foundTrip = await Trip.findById(tripId);
     if (foundTrip) {
@@ -49,8 +51,23 @@ exports.deleteTrip = async (req, res, next) => {
     }
   } catch (error) {
     next(error);
-  };
-}
+  }
+};
+exports.updateTrip = async (req, res, next) => {
+  const { tripId } = req.params;
+
+  try {
+    const foundTrip = await Trip.findById(tripId);
+    if (foundTrip) {
+      await Trip.findByIdAndUpdate(tripId, req.body);
+      res.status(204).end();
+    } else {
+      next();
+    }
+  } catch (error) {
+    next(error);
+  }
+};
 exports.uploadImage = async(req, res, next) => { 
   const date = Date.now()
   const link = './uploads/image' + date + '.png'
