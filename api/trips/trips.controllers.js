@@ -1,4 +1,6 @@
 const Trip = require("../../models/Trip");
+const fs = require('fs');
+
 //const { default: slugify } = require("slugify");
 
 exports.getTrips = async (req, res, next) => {
@@ -47,5 +49,13 @@ exports.deleteTrip = async (req, res, next) => {
     }
   } catch (error) {
     next(error);
-  }
-};
+  };
+}
+exports.uploadImage = async(req, res, next) => { 
+  const date = Date.now()
+  const link = './uploads/image' + date + '.png'
+  req.pipe(fs.createWriteStream(link));
+  const imageLink = "http://192.168.43.154:8095/uploads/image"+date+".png"
+
+  res.status(200).end(imageLink)
+}

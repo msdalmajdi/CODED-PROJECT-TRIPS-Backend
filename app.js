@@ -1,5 +1,6 @@
 const connectDb = require("./database");
 const express = require("express");
+const path = require("path")
 const profileRoutes = require("./api/profiles/profile.routes");
 const passport = require("passport");
 const { localStrategy, jwtStrategy } = require("./middleware/passport");
@@ -22,6 +23,8 @@ app.use(cors());
 app.use("/api/profile", profileRoutes);
 app.use("/api/trips", tripsRoutes);
 app.use(userRoutes);
+
+app.use('/uploads', express.static(path.join(__dirname,"uploads")))
 
 app.use((req, res, next) => {
   const err = new Error("Not Found");
