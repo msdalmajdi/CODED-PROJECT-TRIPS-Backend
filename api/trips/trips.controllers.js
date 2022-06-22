@@ -19,7 +19,7 @@ exports.createTrip = async (req, res, next) => {
   }
 };
 exports.updateTrip = async (req, res, next) => {
-  console.log("I got here");
+  console.log("I got in update");
   const { tripId } = req.params;
   try {
     const foundTrip = await Trip.findById(tripId);
@@ -36,11 +36,27 @@ exports.updateTrip = async (req, res, next) => {
 
 exports.deleteTrip = async (req, res, next) => {
   const { tripId } = req.params;
-
+  console.log(req.params);
   try {
     const foundTrip = await Trip.findById(tripId);
     if (foundTrip) {
       await foundTrip.remove();
+      res.status(204).end();
+    } else {
+      next();
+    }
+  } catch (error) {
+    next(error);
+  }
+};
+
+exports.updateTrip = async (req, res, next) => {
+  const { tripId } = req.params;
+
+  try {
+    const foundTrip = await Trip.findById(tripId);
+    if (foundTrip) {
+      await Trip.findByIdAndUpdate(tripId, req.body);
       res.status(204).end();
     } else {
       next();
