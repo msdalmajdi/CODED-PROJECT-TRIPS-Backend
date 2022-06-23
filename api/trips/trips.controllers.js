@@ -1,6 +1,6 @@
 const Trip = require("../../models/Trip");
 const User = require("../../models/User");
-const fs = require('fs');
+const fs = require("fs");
 
 exports.getTrips = async (req, res, next) => {
   try {
@@ -45,6 +45,9 @@ exports.deleteTrip = async (req, res, next) => {
     const foundTrip = await Trip.findById(tripId);
     if (foundTrip) {
       await foundTrip.remove();
+      await User.findByIdAndUpdate(req.body.owner, {
+        $pull: { trips: foundTrip._id },
+      });
       res.status(204).end();
     } else {
       next();
@@ -68,11 +71,11 @@ exports.updateTrip = async (req, res, next) => {
     next(error);
   }
 };
-exports.uploadImage = async(req, res, next) => { 
-  const date = Date.now()
-  const link = './uploads/image' + date + '.png'
+exports.uploadImage = async (req, res, next) => {
+  const date = Date.now();
+  const link = "./uploads/image" + date + ".png";
   req.pipe(fs.createWriteStream(link));
-  const imageLink = "http://192.168.43.154:8095/uploads/image"+date+".png"
+  const imageLink = "http://192.168.43.154:8095/uploads/image" + date + ".png";
 
-  res.status(200).end(imageLink)
-}
+  res.status(200).end(imageLink);
+};
